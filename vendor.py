@@ -18,7 +18,7 @@ class Loader(object):
 class Finder(object):
 
     def __init__(self, vendor_dir):
-        self._vendor_dir = vendor_dir.rstrip('/') + '/'
+        self._vendor_dir = vendor_dir.rstrip(os.path.sep) + os.path.sep
 
     def find_module(self, fullname, path=None):
 
@@ -28,7 +28,8 @@ class Finder(object):
         if not filename.startswith(self._vendor_dir):
             return
 
-        print filename
+        if '{0}_vendor{0}'.format(os.path.sep) in filename[len(self._vendor_dir):]:
+            return
 
         try:
             f, filename, description = imp.find_module(fullname, [self._vendor_dir])
