@@ -1,5 +1,6 @@
-import imp
+import os
 import sys
+import imp
 import inspect
 
 
@@ -27,6 +28,8 @@ class Finder(object):
         if not filename.startswith(self._vendor_dir):
             return
 
+        print filename
+
         try:
             f, filename, description = imp.find_module(fullname, [self._vendor_dir])
         except ImportError as e:
@@ -38,7 +41,10 @@ class Finder(object):
         return self._vendor_dir == other._vendor_dir
 
 
-def register_directory(vendor_dir):
+def register(vendor_dir=None):
+    if not vendor_dir:
+        vendor_dir = os.path.abspath(os.path.dirname(__file__))
+
     finder = Finder(vendor_dir)
 
     if finder not in sys.meta_path:
