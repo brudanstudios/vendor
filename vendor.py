@@ -39,6 +39,8 @@ class Finder(object):
             return Loader(f, filename, description)
 
     def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
         return self._vendor_dir == other._vendor_dir
 
 
